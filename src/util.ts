@@ -103,7 +103,7 @@ export async function getRandomUserAgent(): Promise<string> {
 
   const userAgent =
     topUserAgents[Math.floor(Math.random() * topUserAgents.length)];
-  logger.debug('user agent', {userAgent});
+  logger.silly('user agent', {userAgent});
   return userAgent;
 }
 

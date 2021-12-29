@@ -156,10 +156,6 @@ async function handleAdBlock(request: HTTPRequest, adBlockRequestHandler: any) {
  * @param store Vendor of items.
  */
 async function lookup(browser: Browser, store: Store) {
-  if (!getStores().has(store.name)) {
-    return;
-  }
-
   if (store.linksBuilder) {
     const lastRunTime = linkBuilderLastRunTimes[store.name] ?? -1;
     const ttl = store.linksBuilder.ttl ?? Number.MAX_SAFE_INTEGER;
@@ -177,8 +173,11 @@ async function lookup(browser: Browser, store: Store) {
   /* eslint-disable no-await-in-loop */
   for (const link of store.links) {
     if (!filterStoreLink(link)) {
+      logger.silly(`[${store.name}] Skipping link lookup: ${link.brand} ${link.model} ${link.series}`)
       continue;
     }
+
+    logger.debug(`[${store.name}] Looking up link: ${link.brand} ${link.model} ${link.series} ${link.url}`)
 
     if (config.page.inStockWaitTime && inStock[link.url]) {
       logger.info(Print.inStockWaiting(link, store, true));
@@ -186,7 +185,6 @@ async function lookup(browser: Browser, store: Store) {
     }
 
     const proxy = nextProxy(store);
-
     const useAdBlock = !config.browser.lowBandwidth && !store.disableAdBlocker;
     const customContext = config.browser.isIncognito;
 
@@ -570,7 +568,12 @@ export async function tryLookupAndLoop(browser: Browser, store: Store) {
     return;
   }
 
-  logger.silly(`[${store.name}] Starting lookup...`);
+  if (!getStores().has(store.name)) {
+    logger.debug(`[${store.name}] Store will not be included in lookups}`)
+    return;
+  }
+
+  logger.debug(`[${store.name}] Starting lookup for store`);
   try {
     await lookup(browser, store);
   } catch (error: unknown) {
@@ -578,6 +581,6 @@ export async function tryLookupAndLoop(browser: Browser, store: Store) {
   }
 
   const sleepTime = getSleepTime(store);
-  logger.silly(`[${store.name}] Lookup done, next one in ${sleepTime} ms`);
+  logger.debug(`[${store.name}] All store links done in lookup round, next round in ${sleepTime} ms`);
   setTimeout(tryLookupAndLoop, sleepTime, browser, store);
 }

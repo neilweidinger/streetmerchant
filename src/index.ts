@@ -31,7 +31,7 @@ async function main() {
   browser = await launchBrowser();
 
   for (const store of storeList.values()) {
-    logger.debug('store links', {meta: {links: store.links}});
+    logger.silly('store links', {meta: {links: store.links}});
     if (store.setupAction !== undefined) {
       store.setupAction(browser);
     }

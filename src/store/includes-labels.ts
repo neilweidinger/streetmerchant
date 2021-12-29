@@ -58,7 +58,7 @@ export async function pageIncludesLabels(
         return false;
       }
 
-      logger.debug(contents);
+      // logger.debug(contents);
 
       return includesLabels(contents, query.text);
     })
