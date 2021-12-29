@@ -33,6 +33,10 @@ export const MediamarktAt: Store = {
         container: '#root',
         text: ['Dieser Artikel ist bald wieder für Sie verfügbar'],
       },
+      {
+        container: '#root',
+        text: ['Dieser Artikel ist bald wieder verfügbar'],
+      },
     ],
   },
   links: [
@@ -83,6 +87,18 @@ export const MediamarktAt: Store = {
       model: 'gaming x trio',
       series: '3070',
       url: 'https://www.mediamarkt.at/de/product/-1812223.html',
+    },
+    {
+      brand: 'sony',
+      model: 'ps5 console',
+      series: 'sonyps5c',
+      url: 'https://www.mediamarkt.at/de/product/_sony-playstation%C2%AE5-ratchet-clank-rift-apart-1842773.html',
+    },
+    {
+      brand: 'sony',
+      model: 'ps5 digital',
+      series: 'sonyps5de',
+      url: 'https://www.mediamarkt.at/de/product/_sony-playstation%C2%AE5-digital-1797340.html',
     },
   ],
   name: 'mediamarkt-at',
